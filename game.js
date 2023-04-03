@@ -1,6 +1,8 @@
 // Dom
 const question = document.getElementById("question");
 const choices = Array.from(document.getElementsByClassName('choice-text'));
+const questionCounterEl = document.getElementById('questionCounter');
+const scoreCounterEl = document.getElementById('score');    
 // console.log(choices);
 
 // Variable declaration
@@ -57,6 +59,9 @@ getNewQuestions = ()=>{
         return window.location.assign('/end.html');
     }
    questionCounter++;
+
+   questionCounterEl.innerText = `${questionCounter}/${Max_Questions}`
+   
    const questionIndex = Math.floor(Math.random()* availableQuestions.length);
    currentQuestion = availableQuestions[questionIndex];
    question.innerText = currentQuestion.question; 
@@ -80,7 +85,30 @@ choices.forEach(choice =>{
         acceptingAnswers =false;
         const selectedChoice = e.target;
         const selectedAnswer = selectedChoice.dataset['number'];
-        getNewQuestions(); 
+        //check if the asnwer is correct or not
+        //ternary
+        const classToApply = selectedAnswer == currentQuestion.answer ? "Correct" : "Incorrect";
+        console.log(classToApply);
+
+        //if answer is correct increment the score by Correct_Bonus constant
+        if(classToApply === 'Correct'){
+            //calling the function incrementScore
+            incrementScore(Correct_Bonus);
+        }
+        //get the clicked container (whole element) and add class to that element
+        selectedChoice.parentElement.classList.add(classToApply);
+        //as it will add and remove very quickly, we do a timeout
+        setTimeout(()=>{
+            selectedChoice.parentElement.classList.remove(classToApply);
+            getNewQuestions();
+        },1000); 
     })
 })
+
+//function to increment the score
+incrementScore = (num)=>{
+    score+=num;
+    scoreCounterEl.innerText =score;
+}
 startGame();
+

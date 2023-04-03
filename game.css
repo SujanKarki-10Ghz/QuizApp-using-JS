@@ -23,3 +23,26 @@
     padding: 1.5rem;
     width: 100%;
 }
+
+.Correct{
+    background-color: #28a745;
+}
+
+.Incorrect{
+    background-color: #dc3545;
+}
+
+/* HUD => HEADS UP DISPLAY */
+#hud{
+    display: flex;
+    justify-content: space-between;
+}
+
+.hud-prefix{
+    text-align: center;
+    font-size: 2rem;
+}
+
+.hud-main-text{
+    text-align: center;
+}
