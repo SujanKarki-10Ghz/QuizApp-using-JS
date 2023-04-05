@@ -5,24 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App | End </title>
+    <title>Quiz App | High Score</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="highScore.css">
 </head>
 
 <body>
     <div class="container">
-        <div id="end" class="flex-center flex-column">
+        <div id="highScores" class="flex-center flex-column">
             <h1 id="finalScore">
+                High Scores
             </h1>
-            <form>
-                <input type="text" name="userName" id="userName" placeholder="username">
-                <button class="btn" id="saveScoreBtn" onclick="saveHighScore(event)" disabled>Save</button>
-            </form>
-            <a href="/game.html" class="btn">Play Again</a>
+            <ul id="highScoresList">
+            </ul>
             <a href="/" class="btn">Go Home</a>
         </div>
     </div>
-    <script src="end.js"></script>
+    <script src="highScore.js"></script>
 </body>
 
 </html>
