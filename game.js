@@ -4,6 +4,8 @@ const choices = Array.from(document.getElementsByClassName("choice-text"));
 const progressTextEl = document.getElementById("progressText");
 const scoreCounterEl = document.getElementById("score");
 const progressBarFull = document.getElementById("progress-bar-full");
+const loader = document.getElementById("loader");
+const game = document.getElementById("game");
 
 // console.log(choices);
 
@@ -15,13 +17,38 @@ let questionCounter = 0;
 let availableQuestions = [];
 
 let questions = [];
-fetch("question.json")
+
+//API fetch
+fetch(
+  "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple"
+)
   .then((res) => {
     return res.json();
   })
-  .then((loadedQuestion) => {
-    console.log(loadedQuestion);
-    questions = loadedQuestion;
+  .then((loadedQuestions) => {
+    // console.log(loadedQuestions.results);
+    questions = loadedQuestions.results.map((loadedQuestion) => {
+      const formattedQuestion = {
+        question: loadedQuestion.question,
+      };
+
+      const answerChoices = [...loadedQuestion.incorrect_answers];
+      formattedQuestion.answer = Math.floor(Math.random() * 3) + 1;
+      answerChoices.splice(
+        formattedQuestion.answer - 1,
+        0,
+        loadedQuestion.correct_answer
+      );
+
+      answerChoices.forEach((choice, index) => {
+        formattedQuestion["choice" + (index + 1)] = choice;
+        // console.log(choice);
+      });
+
+      return formattedQuestion;
+    });
+
+    // questions = loadedQuestion;
     startGame();
   })
   .catch((err) => {
@@ -32,6 +59,7 @@ fetch("question.json")
 const Correct_Bonus = 10;
 const Max_Questions = 3;
 
+//Game start function
 startGame = () => {
   //resets
   questionCounter = 0;
@@ -39,7 +67,14 @@ startGame = () => {
   availableQuestions = [...questions]; //=>spread operator
   console.log(availableQuestions);
   getNewQuestions();
+
+  //As questions load, hidden class is removed from game and hidden class is added to loader
+
+  game.classList.remove("hidden");
+  loader.classList.add("hidden");
 };
+
+//getting new Questions function
 getNewQuestions = () => {
   if (availableQuestions.length === 0 || questionCounter >= Max_Questions) {
     localStorage.setItem("mostRecentScore", score);
